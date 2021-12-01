@@ -3,10 +3,10 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 // import all necessary modules
-import Discord from "discord.js";
+import Discord, { Collection } from "discord.js";
 import { promisify } from "util";
 import glob from "glob";
-import { ICommand } from "./utils/types";
+import { ICommand, ISong } from "./utils/types";
 
 // initialize client object with all the necessary intents
 const client: Discord.Client = new Discord.Client({
@@ -30,6 +30,7 @@ const prefix = "-"; // declare prefix
 // prepare to read command files
 const globPromise = promisify(glob);
 const commands: Array<ICommand> = [];
+const masterQueue = new Collection<string, ISong[]>();
 
 // load in command files
 (async () => {
@@ -100,13 +101,25 @@ client.on("messageCreate", async (message: Discord.Message) => {
 
   // if the command is found, execute it
   if (command) {
-    command.execute(message, args);
+    command.execute(message, masterQueue, args);
   } else {
     console.log("No command found, ignoring message.");
   }
 });
 
+// custom event for when a track stops
+client.on('trackStop', () => {
+
+})
+
+// custom event for when the bot leaves the voice channel
+client.on('voiceChannelLeave', () => {
+
+})
+
 // log in as bot
 client.login(process.env.BOT_TOKEN).catch((err: any) => {
   throw err;
 });
+
+export default client;

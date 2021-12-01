@@ -1,7 +1,7 @@
-import { Message, MessageEmbed } from "discord.js";
+import { Collection, Message, MessageEmbed } from "discord.js";
 import { promisify } from "util";
 import glob from "glob";
-import { ICommand } from "../utils/types";
+import { ICommand, ISong } from "../utils/types";
 
 const command: ICommand = {
   name: "help",
@@ -9,7 +9,11 @@ const command: ICommand = {
     "Displays a general help message, or for a specific command if specified.",
   alias: ["h"],
   syntax: "-help (command name)",
-  async execute(message: Message, args?: string[]) {
+  async execute(
+    message: Message,
+    _masterQueue: Collection<string, ISong[]>,
+    args?: string[]
+  ) {
     console.log(
       `Command help started by user ${message.member!.user.tag} in guild ${
         message.guild!.name

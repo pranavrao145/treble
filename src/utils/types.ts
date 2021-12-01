@@ -1,4 +1,4 @@
-import { Message } from "discord.js";
+import { Collection, Message } from "discord.js";
 
 // interface for a bot command
 export interface ICommand {
@@ -6,5 +6,10 @@ export interface ICommand {
   description: string;
   alias?: string[];
   syntax: string;
-  execute(...args: [message: Message, args?: string[]]): any;
+  execute(...args: [message: Message, masterQueue: Collection<string, ISong[]>, args?: string[]]): any;
+}
+
+export interface ISong {
+    name: string;
+    url: string;
 }
