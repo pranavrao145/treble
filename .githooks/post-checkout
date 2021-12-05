@@ -1,0 +1,4 @@
+#!/bin/sh
+
+cp /home/cypher/Programming/treble/.env .
+yarn
